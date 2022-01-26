@@ -2,6 +2,7 @@ package server
 
 import (
 	pkgConfig "infrastructure-telegram/config"
+	"infrastructure-telegram/internal/components/rest/middleware"
 	"infrastructure-telegram/internal/handlers"
 	"net/http"
 )
@@ -21,6 +22,8 @@ func New(config pkgConfig.Config) Server {
 }
 
 func (s server) Start() error {
-	http.HandleFunc("/healthz", handlers.Healthz())
-	return http.ListenAndServe(s.listen, nil)
+	mux := http.NewServeMux()
+	mux.HandleFunc("/healthz", handlers.Healthz())
+
+	return http.ListenAndServe(s.listen, middleware.Logger(mux))
 }
