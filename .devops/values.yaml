@@ -1,0 +1,18 @@
+Application:
+  # Возможны значения "production", "ground" и "staging".
+  Environment: 'staging'
+  # Образ собранного приложения и его версия.
+  RegistryImage: 'GitLab Build Variable (CI_REGISTRY_IMAGE)'
+  RegistryImageTag: 'latest'
+  # Доменное имя на котором будет работать проект.
+  BaseHost: 'GitLab Variable (HOSTNAME)'
+
+Services:
+  SentryDSN: 'GitLab Variable (SENTRY_DSN)'
+
+Secrets:
+  DockerRegistries:
+    - Registry: 'credentials-docker-registry'
+      Hostname: 'ruvents.dev:5050'
+      Username: 'GitLab Variable (DOCKER_REGISTRY_USERNAME)'
+      Password: 'GitLab Variable (DOCKER_REGISTRY_PASSWORD)'

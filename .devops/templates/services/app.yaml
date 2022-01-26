@@ -1,0 +1,53 @@
+kind: Deployment
+apiVersion: apps/v1
+
+metadata:
+  name: app
+  namespace: {{.Release.Namespace}}
+
+spec:
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+        - name: app
+          image: '{{.Values.Application.RegistryImage}}/application:{{.Values.Application.RegistryImageTag}}'
+          env:
+            - name: LISTEN
+              value: '0.0.0.0:8080'
+            - name: SENTRY_DSN
+              value: '{{.Values.Services.SentryDSN}}'
+            - name: ENVIRONMENT
+              value: '{{.Values.Application.Environment}}'
+            - name: RELEASE
+              value: '{{.Values.Application.RegistryImageTag}}'
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+      imagePullSecrets:
+        - name: credentials-docker-registry
+
+---
+
+kind: Service
+apiVersion: v1
+
+metadata:
+  name: app
+  namespace: {{.Release.Namespace}}
+
+spec:
+  type: ClusterIP
+  selector:
+    app: app
+  ports:
+    - port: 80
+      targetPort: 8080

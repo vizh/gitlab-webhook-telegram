@@ -7,13 +7,14 @@ import (
 	"net/http"
 )
 
-func Write(responseWriter http.ResponseWriter, content interface{}) {
+func Write(writer http.ResponseWriter, content interface{}) {
+	writer.WriteHeader(200)
 	if body, err := json.Marshal(content); err != nil {
 		utils.CaptureFatalEvent(sentry.Event{
 			Message: "Ошибка сериализации результата в JSON: " + err.Error(),
 		})
 	} else {
-		if _, err := responseWriter.Write(body); err != nil {
+		if _, err := writer.Write(body); err != nil {
 			utils.CaptureFatalEvent(sentry.Event{
 				Message: "Ошибка записи результата работы: " + err.Error(),
 			})
