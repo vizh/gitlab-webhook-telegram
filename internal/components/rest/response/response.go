@@ -8,7 +8,6 @@ import (
 )
 
 func Write(writer http.ResponseWriter, content interface{}) {
-	writer.WriteHeader(200)
 	if body, err := json.Marshal(content); err != nil {
 		utils.CaptureFatalEvent(sentry.Event{
 			Message: "Ошибка сериализации результата в JSON: " + err.Error(),

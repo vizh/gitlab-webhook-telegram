@@ -26,6 +26,8 @@ spec:
               value: '{{.Values.Application.Environment}}'
             - name: RELEASE
               value: '{{.Values.Application.RegistryImageTag}}'
+            - name: GITLAB_TOKEN
+              value: '{{.Values.Secrets.GitLabToken}}'
           ports:
             - containerPort: 8080
           readinessProbe:

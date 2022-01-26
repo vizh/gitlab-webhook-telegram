@@ -12,6 +12,7 @@ type Config struct {
 	Release     string `env:"RELEASE" envDefault:"edge"`
 	Listen      string `env:"LISTEN" envDefault:"127.0.0.1:8080"` // В целях безопасности, приложение не слушает на внешних интерфейсах, по-умолчанию.
 	SentryDSN   string `env:"SENTRY_DSN,required"`
+	GitLabToken string `env:"GITLAB_TOKEN,required"` // Указывается в настройках, при создании webhook в GitLab.
 }
 
 func Load() (config Config) {

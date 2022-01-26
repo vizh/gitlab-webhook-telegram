@@ -14,7 +14,7 @@ func RegisterSentryOptions(options sentry.ClientOptions) {
 	}
 }
 
-func CaptureEvent(event sentry.Event) {
+func CaptureEvent(event sentry.Event) (eventID *sentry.EventID) {
 	var err error
 	// Попытаемся определить имя сервера, на котором работаем. Будет сподручнее в Kubernetes.
 	if event.ServerName, err = os.Hostname(); err != nil {
@@ -26,7 +26,7 @@ func CaptureEvent(event sentry.Event) {
 		})
 	}
 	// Собственно, отправляем событие в Sentry.
-	eventID := sentry.CurrentHub().CaptureEvent(&event)
+	eventID = sentry.CurrentHub().CaptureEvent(&event)
 	// На всякий пожарный, маякнем в консоль. Мало ли, кто-то наблюдает.
 	if event.Message == "" {
 		event.Message = event.Exception[0].Type + ": " + event.Exception[0].Value
@@ -40,6 +40,7 @@ func CaptureEvent(event sentry.Event) {
 			},
 		})
 	}
+	return
 }
 
 func CaptureFatalEvent(event sentry.Event) {

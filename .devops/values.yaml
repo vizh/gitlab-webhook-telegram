@@ -11,6 +11,7 @@ Services:
   SentryDSN: 'GitLab Variable (SENTRY_DSN)'
 
 Secrets:
+  GitLabToken: 'GitLab Variable (GITLAB_TOKEN)'
   DockerRegistries:
     - Registry: 'credentials-docker-registry'
       Hostname: 'ruvents.dev:5050'
